@@ -47,6 +47,9 @@ class splashDialog(QDialog):
 
         topics.append(topictitle)
         for topic in topics:
+            if topic=="":
+                topics.remove(topic)
+                continue
             topBut=QPushButton()
             topBut.setText(topic)
             self.vlay.addWidget(topBut)
