@@ -5,9 +5,13 @@ import sys
 
 
 buttonArray=[]
-
+topicTitle=""
+topicIsAdded=False
+topics=[]
 class splashDialog(QDialog):
     def setupUI(self):
+        print "started splashDialog class"
+        self.addButtonIsClicked=False
         self.topicCount=0
 
         self.vlayMain=QVBoxLayout()
@@ -26,17 +30,77 @@ class splashDialog(QDialog):
 
         self.setWindowTitle("noteMate")
 
-        self.connect(self.addbut,SIGNAL("clicked()"),self.addTopic)
+        global topics
+        if len(topics)!=0 or (topicIsAdded and topicTitle!=""):
+            print "topic title is "+topicTitle
+            global topicIsAdded
+            global topicTitle
+            topicIsAdded=False
+            self.addTopic(topicTitle)
+            topicTitle=""
 
-    def addTopic(self,topic="Topic"):
-        self.topicCount+=1
-        topBut=QPushButton()
-        title=topic + " "+str(self.topicCount)
-        topBut.setText(title)
-        self.vlay.addWidget(topBut)
-        self.vlayMain.addLayout(self.vlay)
+        self.connect(self.addbut,SIGNAL("clicked()"),self.addButtonClicked)
+
+    def addTopic(self,topictitle="Topic"):
+        print "title in addtopic is "+topictitle
+        print "title in topics are "+str(topics)
+
+        topics.append(topictitle)
+        for topic in topics:
+            topBut=QPushButton()
+            topBut.setText(topic)
+            self.vlay.addWidget(topBut)
+            self.vlayMain.addLayout(self.vlay)
+
+        """
         topBut.setObjectName("button" + str(self.topicCount))
         buttonArray.append(topBut.objectName())
-        for name in buttonArray:
-            print name
+        """
+    def addButtonClicked(self):
+        self.addButtonIsClicked=True
+        print "add button is clicked from splash.py"
+        print self.addButtonIsClicked
+        self.atui=addTopicUi()
+        self.hide()
+        self.atui.setupUi()
+
+        #return self.addButtonIsClicked
+
+    """
+    def addTopicUi(self):
+        self.hide()
+        self.t_hlay=QHBoxLayout()
+        self.t_line=QLineEdit()
+        self.t_okbut=QPushButton("ok")
+        self.t_hlay.addWidget(self.t_line)
+        self.t_hlay.addWidget(self.t_okbut)
+        self.setLayout(self.t_hlay)
+        self.setWindowTitle("Title")
+    """
+
+
+class addTopicUi(QDialog):
+    def setupUi(self):
+        self.hlay=QHBoxLayout()
+        self.line=QLineEdit()
+        self.okbut=QPushButton("ok")
+        self.hlay.addWidget(self.line)
+        self.hlay.addWidget(self.okbut)
+        self.setLayout(self.hlay)
+        self.setWindowTitle("Title")
+        self.show()
+        self.connect(self.okbut,SIGNAL("clicked()"),self.addtopic)
+    def addtopic(self):
+        global topicTitle,topicIsAdded,topics
+        print topicIsAdded
+        topicTitle=self.line.text()
+        topicIsAdded=True
+        print topicTitle
+        self.sd=splashDialog()
+        self.sd.setupUI()
+        self.hide()
+        self.sd.show()
+        #self.sd.exec_()
+
+
 
