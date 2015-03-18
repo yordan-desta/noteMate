@@ -2,7 +2,7 @@ __author__ = 'pyordan'
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import sys
-
+from newWindow import *
 
 buttonArray=[]
 topicTitle=""
@@ -13,6 +13,8 @@ class splashDialog(QDialog):
         print "started splashDialog class"
         self.addButtonIsClicked=False
         self.topicCount=0
+
+        global topics,topicIsAdded,topicTitle,buttonArray
 
         self.vlayMain=QVBoxLayout()
         self.hlay=QHBoxLayout()
@@ -30,16 +32,14 @@ class splashDialog(QDialog):
 
         self.setWindowTitle("noteMate")
 
-        global topics
         if len(topics)!=0 or (topicIsAdded and topicTitle!=""):
             print "topic title is "+topicTitle
-            global topicIsAdded
-            global topicTitle
             topicIsAdded=False
             self.addTopic(topicTitle)
             topicTitle=""
 
-        self.connect(self.addbut,SIGNAL("clicked()"),self.addButtonClicked)
+        #self.connect(self.addbut,SIGNAL("clicked()"),self.addButtonClicked)
+        self.connect(self.addbut,SIGNAL("clicked()"),self.startwindow)
 
     def addTopic(self,topictitle="Topic"):
         print "title in addtopic is "+topictitle
@@ -54,6 +54,14 @@ class splashDialog(QDialog):
             topBut.setText(topic)
             self.vlay.addWidget(topBut)
             self.vlayMain.addLayout(self.vlay)
+            if topic in buttonArray:
+                continue
+
+            topBut.setObjectName(topic)
+            buttonArray.append(topBut.objectName())
+        for objectname in buttonArray:
+            print objectname
+
 
         """
         topBut.setObjectName("button" + str(self.topicCount))
@@ -69,18 +77,10 @@ class splashDialog(QDialog):
 
         #return self.addButtonIsClicked
 
-    """
-    def addTopicUi(self):
+    def startwindow(self):
+        self.nw= mainWindow()
+        self.nw.show()
         self.hide()
-        self.t_hlay=QHBoxLayout()
-        self.t_line=QLineEdit()
-        self.t_okbut=QPushButton("ok")
-        self.t_hlay.addWidget(self.t_line)
-        self.t_hlay.addWidget(self.t_okbut)
-        self.setLayout(self.t_hlay)
-        self.setWindowTitle("Title")
-    """
-
 
 class addTopicUi(QDialog):
     def setupUi(self):
@@ -104,6 +104,5 @@ class addTopicUi(QDialog):
         self.hide()
         self.sd.show()
         #self.sd.exec_()
-
 
 
