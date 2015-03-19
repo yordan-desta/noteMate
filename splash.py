@@ -33,35 +33,42 @@ class splashDialog(QDialog):
         self.setWindowTitle("noteMate")
 
         if len(topics)!=0 or (topicIsAdded and topicTitle!=""):
-            print "topic title is "+topicTitle
+            #print "topic title is "+topicTitle
             topicIsAdded=False
             self.addTopic(topicTitle)
             topicTitle=""
 
-        #self.connect(self.addbut,SIGNAL("clicked()"),self.addButtonClicked)
-        self.connect(self.addbut,SIGNAL("clicked()"),self.startwindow)
+        self.connect(self.addbut,SIGNAL("clicked()"),self.addButtonClicked)
+        #self.connect(self.addbut,SIGNAL("clicked()"),self.startwindow)
 
     def addTopic(self,topictitle="Topic"):
-        print "title in addtopic is "+topictitle
-        print "title in topics are "+str(topics)
+        """resetting button array list"""
+        buttonArray=[]
+
+        #print "title in addtopic is "+topictitle
+        #print "title in topics are "+str(topics)
 
         topics.append(topictitle)
         for topic in topics:
             if topic=="":
                 topics.remove(topic)
                 continue
-            topBut=QPushButton()
+
+            topBut=topicButtons()
             topBut.setText(topic)
             self.vlay.addWidget(topBut)
             self.vlayMain.addLayout(self.vlay)
-            if topic in buttonArray:
+            if topBut in buttonArray:
                 continue
 
             topBut.setObjectName(topic)
-            buttonArray.append(topBut.objectName())
-        for objectname in buttonArray:
-            print objectname
-
+            #buttonArray.append(topBut.objectName())
+            buttonArray.append(topBut)
+        #print topics
+        for i,objectname in enumerate(buttonArray):
+            print type(objectname.objectName())
+            print i
+            self.connect(objectname,SIGNAL("topic_clicked(QString)"),self.startwindow)
 
         """
         topBut.setObjectName("button" + str(self.topicCount))
@@ -69,7 +76,7 @@ class splashDialog(QDialog):
         """
     def addButtonClicked(self):
         self.addButtonIsClicked=True
-        print "add button is clicked from splash.py"
+        #print "add button is clicked from splash.py"
         print self.addButtonIsClicked
         self.atui=addTopicUi()
         self.hide()
@@ -77,9 +84,12 @@ class splashDialog(QDialog):
 
         #return self.addButtonIsClicked
 
-    def startwindow(self):
+    def startwindow(self,buttonObjName):
+        print buttonObjName
         self.nw= mainWindow()
+        self.nw.topicItems(topics,buttonObjName)
         self.nw.show()
+
         self.hide()
 
 class addTopicUi(QDialog):
@@ -95,14 +105,22 @@ class addTopicUi(QDialog):
         self.connect(self.okbut,SIGNAL("clicked()"),self.addtopic)
     def addtopic(self):
         global topicTitle,topicIsAdded,topics
-        print topicIsAdded
+        #print topicIsAdded
         topicTitle=self.line.text()
         topicIsAdded=True
-        print topicTitle
+        #print topicTitle
         self.sd=splashDialog()
         self.sd.setupUI()
         self.hide()
         self.sd.show()
         #self.sd.exec_()
 
+class topicButtons(QPushButton):
+    def __init__(self,parent=None):
+        super(topicButtons,self).__init__(parent)
+        self.connect(self,SIGNAL("clicked()"),self.topicClicked)
 
+    def topicClicked(self):
+        self.objName=str(self.objectName())
+        print type(self.objName)
+        self.emit(SIGNAL("topic_clicked(QString)"),self.objName)
