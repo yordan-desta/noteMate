@@ -8,13 +8,17 @@ buttonArray=[]
 topicTitle=""
 topicIsAdded=False
 topics=[]
+selfinitFlag=True
+savedTopics=True
 class splashDialog(QDialog):
     def setupUI(self):
-        print "started splashDialog class"
+
+        self.initTopics()
+        self.countForAddtopicEntry=0
         self.addButtonIsClicked=False
         self.topicCount=0
 
-        global topics,topicIsAdded,topicTitle,buttonArray
+        global topics,topicIsAdded,topicTitle,buttonArray,savedTopics
 
         self.vlayMain=QVBoxLayout()
         self.hlay=QHBoxLayout()
@@ -32,65 +36,91 @@ class splashDialog(QDialog):
 
         self.setWindowTitle("noteMate")
 
-        if len(topics)!=0 or (topicIsAdded and topicTitle!=""):
-            #print "topic title is "+topicTitle
+        if savedTopics and (len(topics)!=0 or (topicIsAdded and topicTitle!="")):
             topicIsAdded=False
             self.addTopic(topicTitle)
             topicTitle=""
 
         self.connect(self.addbut,SIGNAL("clicked()"),self.addButtonClicked)
-        #self.connect(self.addbut,SIGNAL("clicked()"),self.startwindow)
+
 
     def addTopic(self,topictitle="Topic"):
         """resetting button array list"""
         buttonArray=[]
-
-        #print "title in addtopic is "+topictitle
-        #print "title in topics are "+str(topics)
-
         topics.append(topictitle)
         for topic in topics:
-            if topic=="":
-                topics.remove(topic)
-                continue
+            if topic!="":
+                topBut=topicButtons()
+                topBut.setText(topic)
+                self.vlay.addWidget(topBut)
+                self.vlayMain.addLayout(self.vlay)
 
-            topBut=topicButtons()
-            topBut.setText(topic)
-            self.vlay.addWidget(topBut)
-            self.vlayMain.addLayout(self.vlay)
-            if topBut in buttonArray:
-                continue
+                if topBut in buttonArray:
+                    continue
 
-            topBut.setObjectName(topic)
-            #buttonArray.append(topBut.objectName())
-            buttonArray.append(topBut)
-        #print topics
+                topBut.setObjectName(topic)
+
+                buttonArray.append(topBut)
+        for i,t in enumerate(topics):
+            if t=="":
+                #print "empty"
+                del topics[i]
+        print "*****",topics,"*****"
+        self.saveTopics()
         for i,objectname in enumerate(buttonArray):
-            print type(objectname.objectName())
-            print i
-            self.connect(objectname,SIGNAL("topic_clicked(QString)"),self.startwindow)
 
-        """
-        topBut.setObjectName("button" + str(self.topicCount))
-        buttonArray.append(topBut.objectName())
-        """
+            self.connect(objectname,SIGNAL("topic_clicked(QString)"),self.startwindow)
+        self.countForAddtopicEntry+=1
     def addButtonClicked(self):
         self.addButtonIsClicked=True
-        #print "add button is clicked from splash.py"
-        print self.addButtonIsClicked
+       # print self.addButtonIsClicked
         self.atui=addTopicUi()
         self.hide()
         self.atui.setupUi()
 
-        #return self.addButtonIsClicked
-
     def startwindow(self,buttonObjName):
-        print buttonObjName
+        #print buttonObjName
         self.nw= mainWindow()
         self.nw.topicItems(topics,buttonObjName)
         self.nw.show()
-
         self.hide()
+    """save and restore lists"""
+    def initTopics(self):
+        if selfinitFlag:
+            global topics
+            try:
+                file=open("arrayList",'r')
+                read=file.read()
+                rtopics=read.split(",")
+                """check is there is any saved topics"""
+                if len(rtopics)==1 and rtopics[0]=='':
+                    global savedTopics
+                    savedTopics=False
+                for topic in rtopics:
+                    topics.append(topic)
+                    #print topic
+                file.close()
+                #print topics
+                self.saveTopics()
+            except:
+                file=open("arrayList",'w+')
+            file.close()
+            global selfinitFlag
+            selfinitFlag=False
+    def saveTopics(self):
+        file=open("arrayList",'w+')
+        count=0
+        for topic in topics:
+           # print topic
+            if count==0:
+                file.write(topic)
+                count+=1
+            else:
+                file.write(","+topic)
+        file.close()
+
+
+
 
 class addTopicUi(QDialog):
     def setupUi(self):
@@ -106,6 +136,8 @@ class addTopicUi(QDialog):
     def addtopic(self):
         global topicTitle,topicIsAdded,topics
         #print topicIsAdded
+        global savedTopics
+        savedTopics=True
         topicTitle=self.line.text()
         topicIsAdded=True
         #print topicTitle
@@ -115,6 +147,7 @@ class addTopicUi(QDialog):
         self.sd.show()
         #self.sd.exec_()
 
+
 class topicButtons(QPushButton):
     def __init__(self,parent=None):
         super(topicButtons,self).__init__(parent)
@@ -122,5 +155,5 @@ class topicButtons(QPushButton):
 
     def topicClicked(self):
         self.objName=str(self.objectName())
-        print type(self.objName)
+        #print type(self.objName)
         self.emit(SIGNAL("topic_clicked(QString)"),self.objName)
