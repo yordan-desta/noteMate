@@ -39,3 +39,8 @@ class mainWindow(QDialog,Ui_Dialog):
         """
         self.topic= topicList
         self.topicCombobox.addItems(topicList)
+        for i,topics in enumerate(topicList):
+            if topics==callerButId:
+                print i
+                self.topicCombobox.setCurrentIndex(i)
+
