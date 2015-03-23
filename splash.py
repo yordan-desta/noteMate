@@ -27,6 +27,7 @@ class splashDialog(QDialog):
 
         self.vlay=QVBoxLayout()
 
+        self.setWindowTitle("noteMate V0.1")
         self.hlay.addWidget(self.qlable)
         self.hlay.addWidget(self.addbut)
 

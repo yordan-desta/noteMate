@@ -22,6 +22,7 @@ class mainWindow(QDialog,Ui_Dialog):
         self.saveButton.setText("save")
         self.textEdit.appendPlainText("")
         self.textEdit.setFocus()
+        self.setWindowTitle("noteMate(test Release)")
 
     def startUpSetup(self):
 
