@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QComboBox" name="topicCombobox">
    <property name="geometry">
     <rect>
@@ -27,6 +30,11 @@
      <width>261</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(0, 85, 255);
+font: 75 9pt &quot;Microsoft JhengHei UI&quot;;
+</string>
    </property>
   </widget>
   <widget class="QPushButton" name="addButton">
@@ -38,8 +46,12 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(42, 42, 255);
+</string>
+   </property>
    <property name="text">
-    <string/>
+    <string>+</string>
    </property>
   </widget>
   <widget class="QPushButton" name="delButton">
@@ -51,8 +63,11 @@
      <height>26</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(203, 5, 5);</string>
+   </property>
    <property name="text">
-    <string/>
+    <string>-</string>
    </property>
   </widget>
   <widget class="QPlainTextEdit" name="textEdit">
@@ -64,6 +79,10 @@
      <height>451</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font: italic 12pt &quot;MS Sans Serif&quot;;
+background-color: rgb(255, 246, 107);</string>
+   </property>
   </widget>
   <widget class="QPushButton" name="saveButton">
    <property name="geometry">
@@ -74,8 +93,12 @@
      <height>27</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">font: italic 9pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(85, 85, 255);</string>
+   </property>
    <property name="text">
-    <string/>
+    <string>save</string>
    </property>
   </widget>
  </widget>
