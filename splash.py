@@ -26,7 +26,6 @@ class splashDialog(QDialog):
         self.hlay.addWidget(self.addbut)
         self.vlayMain.addLayout(self.hlay)
         self.setLayout(self.vlayMain)
-        self.setWindowTitle("noteMate")
         if savedTopics and (len(topics)!=0 or (topicIsAdded and topicTitle!="")):
             topicIsAdded=False
             self.addTopic(topicTitle)
