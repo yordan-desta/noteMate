@@ -12,7 +12,7 @@ class mainWindow(QDialog,Ui_Dialog):
         self.setFixedHeight(self.height())
         self.check_size(self)
         self.setGeometry(1000,100,342, 481)
-        self.delButton.setText("<-")
+        self.delButton.setText("-")
         self.addButton.setText("+")
         self.saveButton.setText("save")
         self.textEdit.appendPlainText("")

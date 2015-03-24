@@ -2,6 +2,13 @@ __author__ = 'pyordan'
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import sys
+
+try:
+    _fromUtf8 =QString.fromUtf8
+except AttributeError:
+    def _fromUtf8(s):
+        return s
+
 from newWindow import *
 buttonArray=[]
 topicTitle=""
@@ -21,12 +28,11 @@ class splashDialog(QDialog):
         self.qlable=QLabel("Select your topic")
         self.addbut=QPushButton("add")
         self.vlay=QVBoxLayout()
-        self.setWindowTitle("noteMate V0.1")
+        self.setWindowTitle("noteMate V0.2")
         self.hlay.addWidget(self.qlable)
         self.hlay.addWidget(self.addbut)
         self.vlayMain.addLayout(self.hlay)
         self.setLayout(self.vlayMain)
-        self.setWindowTitle("noteMate")
         if savedTopics and (len(topics)!=0 or (topicIsAdded and topicTitle!="")):
             topicIsAdded=False
             self.addTopic(topicTitle)
@@ -42,6 +48,9 @@ class splashDialog(QDialog):
             if topic!="":
                 topBut=topicButtons()
                 topBut.setText(topic)
+                topBut.setStyleSheet(_fromUtf8("color: rgb(0, 85, 255);\n"
+"font: 75 9pt \"Microsoft JhengHei UI\";\n"
+""))
                 self.vlay.addWidget(topBut)
                 self.vlayMain.addLayout(self.vlay)
 
@@ -109,8 +118,10 @@ class addTopicUi(QDialog):
         self.hlay.addWidget(self.line)
         self.hlay.addWidget(self.okbut)
         self.setLayout(self.hlay)
-        self.setWindowTitle("Title")
+        self.setWindowTitle("")
+        self.setWindowFlags(Qt.SplashScreen)
         self.show()
+
         self.connect(self.okbut,SIGNAL("clicked()"),self.addtopic)
     def addtopic(self):
         global topicTitle,topicIsAdded,topics
