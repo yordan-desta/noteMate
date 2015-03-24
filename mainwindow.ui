@@ -22,20 +22,20 @@
   <widget class="QComboBox" name="topicCombobox">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>0</y>
-     <width>281</width>
-     <height>27</height>
+     <x>40</x>
+     <y>2</y>
+     <width>261</width>
+     <height>26</height>
     </rect>
    </property>
   </widget>
   <widget class="QPushButton" name="addButton">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>0</y>
+     <x>306</x>
+     <y>2</y>
      <width>31</width>
-     <height>27</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="text">
@@ -45,10 +45,10 @@
   <widget class="QPushButton" name="delButton">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
+     <x>3</x>
+     <y>2</y>
      <width>31</width>
-     <height>27</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="text">
@@ -58,9 +58,9 @@
   <widget class="QPlainTextEdit" name="textEdit">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>4</x>
      <y>30</y>
-     <width>341</width>
+     <width>337</width>
      <height>451</height>
     </rect>
    </property>
@@ -68,9 +68,9 @@
   <widget class="QPushButton" name="saveButton">
    <property name="geometry">
     <rect>
-     <x>300</x>
+     <x>301</x>
      <y>450</y>
-     <width>31</width>
+     <width>35</width>
      <height>27</height>
     </rect>
    </property>
@@ -80,9 +80,9 @@
   </widget>
  </widget>
  <tabstops>
-  <tabstop>topicCombobox</tabstop>
-  <tabstop>addButton</tabstop>
   <tabstop>saveButton</tabstop>
+  <tabstop>addButton</tabstop>
+  <tabstop>topicCombobox</tabstop>
   <tabstop>textEdit</tabstop>
   <tabstop>delButton</tabstop>
  </tabstops>

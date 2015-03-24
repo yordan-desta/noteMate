@@ -29,10 +29,7 @@ class mainWindow(QDialog,Ui_Dialog):
         self.connect(self.saveButton,SIGNAL("clicked()"),self.saveCurrentTopicText)
         self.connect(self.addButton,SIGNAL("clicked()"),self.backToSplash)
         self.connect(self.topicCombobox, SIGNAL("currentIndexChanged(QString)"),self.updateTextEdit)
-        if len(self.topicList)==1:
-            self.delButton.setEnabled(False)
-        else:
-            self.delButton.setEnabled(True)
+
     def saveCurrentTopicText(self):
         topic=self.topicCombobox.currentText()
         try:
@@ -94,7 +91,7 @@ class mainWindow(QDialog,Ui_Dialog):
         file=open("arrayList",'r')
         self.topicCombobox.removeItem(index)
         self.delFromSplash(topic)
-        os.remove(topic)
+        os.remove(str(topic))
 
         if(len(self.topicList)>0):
             topic=self.topicList[0]
